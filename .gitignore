@@ -80,6 +80,9 @@ typings/
 
 # Keystone output
 .keystone
+*.db
+schema.graphql
+schema.prisma
 
 # Nuxt.js build / generate output
 .nuxt
