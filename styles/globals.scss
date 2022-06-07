@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./inter";
+
+html {
+  @apply bg-theme-accent;
+  &.dark {
+    @apply bg-theme-base;
+    @apply text-theme-accent;
+  }
+
+  font-family: "Inter";
+  @supports (font-variation-settings: normal) {
+    font-family: "Inter var";
+  }
+}
