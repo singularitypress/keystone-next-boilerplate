@@ -5,6 +5,7 @@ import { document } from "@keystone-6/fields-document";
 export const Post = list({
   fields: {
     title: text(),
+    slug: text({ validation: { isRequired: true }, isIndexed: "unique" }),
     publishedAt: timestamp(),
     status: select({
       options: [

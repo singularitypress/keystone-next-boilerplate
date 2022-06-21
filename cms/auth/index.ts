@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const { withAuth } = createAuth({
-  listKey: "user",
+  listKey: "User",
   identityField: "email",
   sessionData: "name",
   secretField: "password",
