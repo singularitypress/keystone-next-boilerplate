@@ -1,51 +1,51 @@
-import { InferGetStaticPropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 
 // Import the generated Lists API and types from Keystone
 import { query } from ".keystone/api";
 import Head from "next/head";
 
-type Post = {
+type Hero = {
   id: string;
   title: string;
+  subTitle?: string;
+  ctaText?: string;
+  ctaURL?: string;
+  bgLight?: {
+    publicUrlTransformed: string;
+  };
+  bgDark?: {
+    publicUrlTransformed: string;
+  };
   slug: string;
 };
 
 // Home receives a `posts` prop from `getStaticProps` below
-export default ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
+export default ({ hero }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <Head>
         <title>Home</title>
       </Head>
       <div>
-        <main style={{ margin: "3rem" }}>
-          <h1>Hello World! 👋🏻 </h1>
-          <ul>
-            {/* Render each post with a link to the content page */}
-            {posts.map((post) => (
-              <li key={post.id}>
-                <Link href={`/updates/${post.slug}`}>
-                  <a>{post.title}</a>
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <main>
+          <pre>
+            <code>{JSON.stringify(hero)}</code>
+          </pre>
         </main>
       </div>
     </>
   );
 };
 
-// Here we use the Lists API to load all the posts we want to display
-// The return of this function is provided to the `Home` component
-export const getStaticProps = async () => {
-  const posts = (await query.Post.findMany({
-    query: "id title slug",
-  })) as Post[];
-  return {
-    props: {
-      posts,
-    },
-  };
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+  const hero = (await query.Hero.findOne({
+    where: { slug: "york-logic" },
+    query:
+      "id title subTitle ctaText ctaURL bgLight { publicUrlTransformed } bgDark { publicUrlTransformed }",
+  })) as Hero;
+  if (!hero) {
+    return { notFound: true };
+  }
+  return { props: { hero } };
 };
