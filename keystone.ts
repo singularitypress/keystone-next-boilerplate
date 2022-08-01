@@ -4,9 +4,12 @@ import { withAuth, session } from "./cms/auth";
 
 export default config(
   withAuth({
+    server: {
+      port: 8000,
+    },
     db: {
-      provider: "sqlite",
-      url: "file:./app.db",
+      provider: (process.env.PROVIDER as "sqlite" | "postgresql") ?? "sqlite",
+      url: `${process.env.DB}`,
     },
     experimental: {
       generateNextGraphqlAPI: true,
